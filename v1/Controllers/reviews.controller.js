@@ -1,20 +1,19 @@
 const express = require("express");
-const Services = require('../Models/services.model');
+const Reviews = require('../Models/reviews.model');
 require('dotenv').config();
 
 
 
-// publish a service
-exports.AddAService = async (req, res) => {
+// add a review
+exports.AddAReview = async (req, res) => {
     try {
-        const service = req.body;
-        // console.log(req.file);
+        const review = req.body;
         // console.log(req.body);
-        const services = await Services.create(service);
+        const reviews = await Reviews.create(review);
         res.status(200).json({
             status: "Successful",
             message: "Data added Successfully",
-            data: services
+            data: reviews
         });
     } catch (error) {
         res.json(error);
@@ -22,21 +21,21 @@ exports.AddAService = async (req, res) => {
 }
 
 
-// get single service
-exports.getSingleService = async (req, res) => {
+// get single review
+exports.getSingleReview = async (req, res) => {
     try {
         const id = req.params.id;
         const query = { _id: id }
-        const service = await Services.findOne(query);
-        return res.status(200).json(service);
+        const review = await Reviews.findOne(query);
+        return res.status(200).json(review);
     } catch (err) {
         res.status(404).json(err.message);
     }
 }
 
 
-// get all services
-exports.getAllServices = async (req, res) => {
+// get all reviews
+exports.getAllReviews = async (req, res) => {
     try {
         let filters = { ...req.query };
 
@@ -93,7 +92,7 @@ exports.getAllServices = async (req, res) => {
         };
 
 
-        const result = await Services.find(filters)
+        const result = await Reviews.find(filters)
             .skip(queries.skip)
             .limit(queries.limit)
             .sort(queries.sortBy)
@@ -101,12 +100,12 @@ exports.getAllServices = async (req, res) => {
             ;
 
 
-        const totalServices = await Services.countDocuments(filters);
-        const pageCount = Math.ceil(totalServices / queries.limit);
+        const totalReviews = await Reviews.countDocuments(filters);
+        const pageCount = Math.ceil(totalReviews / queries.limit);
 
 
         // if not data
-        if (Services.length === 0) {
+        if (Reviews.length === 0) {
             return res.status(200).json({
                 message: "You've no Data or Entered a Wrong Queries. Please insert first then Find data or check your Queries",
             });
@@ -116,7 +115,7 @@ exports.getAllServices = async (req, res) => {
         res.status(200).json({
             status: "success",
             message: "Data Get Successfull",
-            data: { totalServices, pageCount, result }
+            data: { totalReviews, pageCount, result }
         });
 
 
@@ -130,14 +129,14 @@ exports.getAllServices = async (req, res) => {
 }
 
 
-// delete a service
-exports.deleteAService = async (req, res) => {
+// delete a review
+exports.deleteAReview = async (req, res) => {
     try {
         const id = req.params.id;
         // console.log(id);
         const query = { _id: id };
         // console.log(query);
-        const result = await Services.deleteOne(query);
+        const result = await Reviews.deleteOne(query);
         res.send(result);
     } catch (err) {
         res.status(404).json(err);
