@@ -126,6 +126,56 @@ exports.deleteAnOrder = async (req, res) => {
     }
 }
 
+// delete a review
+exports.deleteOrdersReview = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const order = await Orders.findById(id);
+
+        if (!order) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+
+        // Check if the review field exists
+        if (!order.review) {
+            return res.status(404).json({ error: 'Review not found' });
+        }
+
+        // Set the review field to undefined
+        order.review = undefined;
+
+        // Save the updated order
+        await order.save();
+
+        res.status(200).json({
+            status: 'Successful',
+            message: 'Review deleted Successfully',
+            data: order,
+        });
+    } catch (err) {
+        res.status(404).json(err);
+    }
+}
+
+
+
+// add review on order
+exports.addAReview = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const review = req.body;
+        const filter = { _id: id };
+        const options = { upsert: true };
+        const updateDoc = {
+            $set: { review: review }
+        };
+        const result = await Orders.updateOne(filter, updateDoc, options);
+        res.send(result);
+    } catch (err) {
+        res.status(404).json(err);
+    }
+}
+
 
 // confirm an order
 exports.confirmAnOrder = async (req, res) => {

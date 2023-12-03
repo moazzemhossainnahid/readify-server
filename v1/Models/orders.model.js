@@ -40,6 +40,34 @@ const orderSchema = mongoose.Schema(
     value_d: String,
     ipn_url: String,
     val_id: String,
+    review: {
+      name: {
+        type: String,
+        trim: true,
+        unique: false,
+        required: false,
+      },
+      image: {
+        required: false,
+        type: String,
+        validate: [validator.isURL, "Please provide Product Image URL"],
+      },
+      email: {
+        type: String,
+        trim: true,
+        required: false,
+      },
+      review: {
+        type: String,
+        trim: true,
+        required: false,
+      },
+      rating: {
+        type: Number,
+        trim: true,
+        required: false,
+      },
+    },
   },
   {
     timestamps: true,
