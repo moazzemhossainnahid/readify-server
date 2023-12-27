@@ -41,7 +41,7 @@ const userSchema = mongoose.Schema(
             minLength: [3, "Name must be at least 3 characters."],
             maxLength: [100, "Name is too large"],
         },
-        contactNumber: {
+        phoneNumber: {
             type: String,
             validate: [validator.isMobilePhone, "Please provide a valid contact number"],
         },
