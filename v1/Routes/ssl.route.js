@@ -88,8 +88,9 @@ router.post("/init", async (req, res) => {
 // Sign in to see your own test API key embedded in code samples.
 
 router.post("/ssl-payment-success", async (req, res) => {
-    console.log("body",req.body);
-    console.log("Hitting");
+  console.log("body", req.body);
+  console.log("params", req.params);
+  console.log("Hitting");
   try {
     await Orders.updateOne(
       { tran_id: req.body.tran_id },
